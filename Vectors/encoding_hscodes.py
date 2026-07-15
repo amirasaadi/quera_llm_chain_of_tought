@@ -1,12 +1,30 @@
-from langchain.vectorstores import Chroma
-from langchain.embeddings import OpenAIEmbeddings
+import os
 
-embeddings = OpenAIEmbeddings()
+import arabic_reshaper
+from bidi.algorithm import get_display
+from dotenv import load_dotenv
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-vector_db = Chroma.from_texts(
-    texts=["متن ۱", "متن ۲", "متن ۱۰۰۰..."], 
-    embedding=embeddings,
-    collection_name="my_course_collection"
+
+def rtl(text: str) -> str:
+    reshaped_text = arabic_reshaper.reshape(text)
+    return get_display(reshaped_text)
+
+
+load_dotenv()
+
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="gemini-embedding-001"
 )
 
-results = vector_db.similarity_search("سوال کاربر", k=2)
+texts = [
+    "هوش مصنوعی یکی از شاخه‌های علوم کامپیوتر است.",
+    "یادگیری ماشین زیرمجموعه‌ای از هوش مصنوعی است.",
+    "امروز هوا آفتابی است.",
+]
+
+vectors = embeddings.embed_documents(texts)
+
+print(rtl(f"تعداد بردارها: {len(vectors)}"))
+print(rtl(f"طول هر بردار: {len(vectors[0])}"))
+print(vectors[0][:10])

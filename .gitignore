@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 .env
 .ipynb_checkpoints/
-.vscode/
+.vscode/Vectors/chroma_db/
+.agents/

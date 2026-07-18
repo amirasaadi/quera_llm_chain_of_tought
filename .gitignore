@@ -6,3 +6,17 @@ __pycache__/
 .vscode/
 Vectors/chroma_db/
 .agents/
+
+# ChromaDB persistent databases
+Vectors/
+**/.chroma/
+**/.chroma*/
+**/chroma_db/
+**/chroma_db*/
+**/chroma-db/
+**/chroma-db*/
+**/chroma_data/
+**/chroma_data*/
+**/chroma-data/
+**/chroma-data*/
+**/chroma.sqlite3

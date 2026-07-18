@@ -41,8 +41,26 @@ Then open the local URL printed by Streamlit, normally
 <http://localhost:8501>.
 
 The example documents are defined in
-`Vectors/semantic_search/documents.py`. Chroma's generated local database is
-stored in `Vectors/chroma_db/`.
+`Vectors/semantic_search/data/trf.xlsx`. Encode column C (`شرح`) and store
+column B (`کد تعرفه`) as result metadata before starting the app:
+
+```bash
+uv run python Vectors/encode_tariffs.py --reset
+```
+
+The encoder prints progress after every successful batch and writes a
+checkpoint into `Vectors/chroma_db/`. If it is interrupted, run it again
+without `--reset` to continue from the last completed batch:
+
+```bash
+uv run python Vectors/encode_tariffs.py
+```
+
+The default batch and delay settings are paced for a quota of 100 embedded
+items per minute. You can adjust them with `--batch-size` and `--delay` to
+match the active limits shown for your project in Google AI Studio.
+
+Chroma's generated local database is stored in `Vectors/chroma_db/`.
 
 ## Standalone embedding example
 

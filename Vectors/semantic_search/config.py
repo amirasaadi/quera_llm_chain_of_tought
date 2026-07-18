@@ -15,6 +15,10 @@ class Settings:
     collection_name: str = "educational_texts"
     embedding_model: str = "gemini-embedding-001"
 
+    @property
+    def encoding_checkpoint(self) -> Path:
+        return self.chroma_directory / "tariff_encoding_progress.json"
+
 
 def load_settings() -> Settings:
     load_dotenv(

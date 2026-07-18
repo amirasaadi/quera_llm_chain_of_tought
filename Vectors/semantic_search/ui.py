@@ -1,5 +1,3 @@
-from collections.abc import Sequence
-
 import streamlit as st
 
 from semantic_search.vector_store import SemanticSearchService
@@ -42,17 +40,6 @@ def configure_page() -> None:
     )
 
 
-def render_documents(
-    texts: Sequence[str],
-) -> None:
-    st.subheader("متن‌های موجود")
-
-    for index, text in enumerate(texts, start=1):
-        with st.container(border=True):
-            st.caption(f"متن {index}")
-            st.write(text)
-
-
 def render_search(
     search_service: SemanticSearchService,
 ) -> None:
@@ -67,7 +54,7 @@ def render_search(
 
         submitted = st.form_submit_button(
             label="جست‌وجو",
-            use_container_width=True,
+            width="stretch",
         )
 
     if not submitted:
@@ -100,3 +87,6 @@ def render_search(
     with st.container(border=True):
         st.markdown("**نزدیک‌ترین متن**")
         st.write(closest_document.page_content)
+        tariff_code = closest_document.metadata.get("tariff_code")
+        if tariff_code:
+            st.markdown(f"**کد تعرفه:** `{tariff_code}`")

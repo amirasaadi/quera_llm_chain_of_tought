@@ -85,6 +85,31 @@ class SemanticSearchService:
             ],
         )
 
+    def reset_collection(self) -> None:
+        """Delete all vectors in the configured collection."""
+        self._vector_store.delete_collection()
+
+    def add_tariffs(
+        self,
+        rows: Sequence[tuple[int, str, str]],
+    ) -> None:
+        """Embed and persist tariff descriptions with searchable metadata."""
+        if not rows:
+            return
+
+        self._vector_store.add_texts(
+            texts=[description for _, _, description in rows],
+            ids=[f"tariff-row-{row_number}" for row_number, _, _ in rows],
+            metadatas=[
+                {
+                    "source": "trf.xlsx",
+                    "excel_row": row_number,
+                    "tariff_code": tariff_code,
+                }
+                for row_number, tariff_code, _ in rows
+            ],
+        )
+
     def search(
         self,
         query: str,
